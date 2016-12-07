@@ -21,7 +21,8 @@ void Stack<T>::Push(const T& element){
 }
 
 template<typename T>
-T Stack<T>::Pop(){
+T Stack<T>::Pop() {
+	if (!count_) throw std::logic_error("Stack is empty\n");
 	return array_[--count_];
 }
 
