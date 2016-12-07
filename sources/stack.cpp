@@ -10,7 +10,7 @@ void Stack<T>::Push(const T& element){
 	if (array_size_ == count_) {
 		T* tmp = new T[++array_size_];
 	
-		for (size_t i = 0; i < array_size_; ++i) {
+		for (size_t i = 0; i < array_size_ - 1; ++i) {
 			tmp[i] = array_[i];
 		}
 		
