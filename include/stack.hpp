@@ -9,26 +9,43 @@ class Stack {
 	size_t count_;
 public:
 	Stack():array_(nullptr), array_size_(0), count_(0) {};
-	size_t Count() const;
-	void Push(const T&);
-	T Pop();
 	~Stack();
+
+	auto count() const noexcept -> size_t;
+	auto empty() const noexcept -> bool;
+	auto push(const T&) /*strong*/ -> void;
+	auto pop() /*strong*/ -> void;
+	auto top() /*strong*/ -> T;
 };
 
+
 template<typename T>
-inline size_t Stack<T>::Count() const{
+auto Stack<T>::count() const noexcept -> size_t{
 	return count_;
 }
 
 template<typename T>
-void Stack<T>::Push(const T& element){
+auto Stack<T>::empty() const noexcept -> bool{
+	return !count_;
+}
+
+template<typename T>
+auto Stack<T>::push(const T& element) /*strong*/-> void{
 	if (array_size_ == count_) {
-		T* tmp = new T[++array_size_];
-	
-		for (size_t i = 0; i < array_size_ - 1; ++i) {
-			tmp[i] = array_[i];
-		}
 		
+		T* tmp = nullptr;
+		try {
+			tmp = new T[++array_size_];
+
+			for (size_t i = 0; i < array_size_ - 1; ++i) {
+				tmp[i] = array_[i];
+			}
+		}
+		catch (...) {
+			delete[] tmp;
+			throw;
+		}
+
 		delete[] array_;
 		array_ = tmp;
 	}
@@ -36,15 +53,23 @@ void Stack<T>::Push(const T& element){
 }
 
 template<typename T>
-T Stack<T>::Pop() {
-	if (!count_) throw std::logic_error("Stack is empty\n");
-	return array_[--count_];
+auto Stack<T>::pop() /*strong*/ -> void{
+	if (count_)
+		--count_;
+	else
+		throw std::logic_error("Stack is empty.");
 }
 
 template<typename T>
-Stack<T>::~Stack(){
-	delete[] array_;
+auto Stack<T>::top() /*strong*/ -> T {
+	if (count_)
+		return array_[--count_];
+	else
+		throw std::logic_error("Stack is empty.");
 }
 
-
+template<typename T>
+Stack<T>::~Stack() {
+	delete[] array_;
+}
 

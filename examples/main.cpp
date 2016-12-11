@@ -3,14 +3,12 @@
 int main() {
 	try {
 		Stack<int> st;
-		st.Push(1);
-		st.Push(2);
-		st.Push(5);
+		st.push(1);
+		st.push(2);
+		st.push(5);
 
-		std::cout << st.Pop() << std::endl;
-		std::cout << st.Pop() << std::endl;
-		std::cout << st.Pop() << std::endl;
-		std::cout << st.Pop() << std::endl;
+		st.pop();
+		std::cout << st.top() << std::endl;
 	}
 	catch (std::logic_error& e) {
 		std::cout << e.what();

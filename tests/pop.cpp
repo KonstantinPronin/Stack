@@ -6,37 +6,17 @@ SCENARIO("decrease count after poping element")
     GIVEN("stack")
     {
         Stack<int> st;
-        st.Push(1);
-        st.Push(2);
-        size_t count = st.Count();
+        st.push(1);
+        st.push(2);
+        size_t count = st.count();
 
         WHEN("pop an element")
         {
-            st.Pop();
+            st.pop();
 
             THEN("count --")
             {
-                REQUIRE(st.Count() == count - 1);
-            }
-        }
-    }
-}
-
-SCENARIO("return last element after pop()")
-{
-    GIVEN("stack")
-    {
-        Stack<int> st;
-        st.Push(1);
-        st.Push(2);
-
-        WHEN("pop an element")
-        {
-            int res = st.Pop();
-
-            THEN("popped element must be 2")
-            {
-                REQUIRE(res == 2);
+                REQUIRE(st.count() == count - 1);
             }
         }
     }
@@ -52,7 +32,7 @@ SCENARIO("if stack is empty, pop method must throw an exception")
         {
             THEN("an exception must be thrown")
             {
-                REQUIRE_THROWS_AS(st.Pop(), std::logic_error&);
+                REQUIRE_THROWS_AS(st.pop(), std::logic_error&);
             }
         }
     }

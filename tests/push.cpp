@@ -6,17 +6,17 @@ SCENARIO("push element")
     GIVEN("stack")
     {
         Stack<int> st;
-        st.Push(1);
-        st.Push(2);
-        size_t count = st.Count();
+        st.push(1);
+        st.push(2);
+        size_t count = st.count();
 
         WHEN("push element")
         {
-            st.Push(3);
+            st.push(3);
 
             THEN("count of elements must increase by one")
             {
-                REQUIRE(st.Count() == count + 1);
+                REQUIRE(st.count() == count + 1);
             }
         }
     }
