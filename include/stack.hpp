@@ -31,6 +31,9 @@ auto Stack<T>::empty() const noexcept -> bool{
 
 template<typename T>
 auto Stack<T>::push(const T& element) /*strong*/-> void{
+    
+    T* backup = array_;
+
 	if (array_size_ == count_) {
 		
 		T* tmp = nullptr;
@@ -47,7 +50,6 @@ auto Stack<T>::push(const T& element) /*strong*/-> void{
 			throw;
 		}
 
-		delete[] array_;
 		array_ = tmp;
 	}
     
@@ -56,10 +58,13 @@ auto Stack<T>::push(const T& element) /*strong*/-> void{
 	    array_[count_] = element;
     }
     catch(...){
+        delete[] array_;
+        array_ = backup;
 	--array_size_;
         throw;    
     }
 
+    delete[] backup;
     ++count_;
 }
 
