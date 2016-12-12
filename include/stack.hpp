@@ -37,12 +37,13 @@ auto Stack<T>::push(const T& element) /*strong*/-> void{
 		try {
 			tmp = new T[++array_size_];
 
-            for (size_t i = 0; i < array_size_ - 1; ++i) {
-                tmp[i] = array_[i];
+            		for (size_t i = 0; i < array_size_ - 1; ++i) {
+                		tmp[i] = array_[i];
 			}
 		}
 		catch (...) {
 			delete[] tmp;
+			--array_size_;
 			throw;
 		}
 
@@ -55,6 +56,7 @@ auto Stack<T>::push(const T& element) /*strong*/-> void{
 	    array_[count_] = element;
     }
     catch(...){
+	--array_size_;
         throw;    
     }
 
@@ -71,9 +73,9 @@ auto Stack<T>::pop() /*strong*/ -> void{
 
 template<typename T>
 auto Stack<T>::top() /*strong*/ -> T {
-	if (count_)
-        return array_[count_ - 1];
-    else
+    	if (count_)
+        	return array_[count_ - 1];
+    	else
 		throw std::logic_error("Stack is empty.");
 }
 
