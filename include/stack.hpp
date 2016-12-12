@@ -32,11 +32,12 @@ auto Stack<T>::empty() const noexcept -> bool{
 template<typename T>
 auto Stack<T>::push(const T& element) /*strong*/-> void{
     
-    T* backup = array_;
+    	T* backup = array_;
 
 	if (array_size_ == count_) {
 		
 		T* tmp = nullptr;
+		
 		try {
 			tmp = new T[++array_size_];
 
