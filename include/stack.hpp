@@ -54,7 +54,7 @@ auto Stack<T>::push(const T& element) /*strong*/-> void{
 		}
 		
 		array_ = tmp;
-		flag = true;
+		mem_alloc = true;
 	}
     
     
