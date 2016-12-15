@@ -5,7 +5,7 @@ SCENARIO("empty stack return count")
 {
     GIVEN("empty stack")
     {
-        Stack<int> st;
+        stack<int> st;
 
         WHEN("count()")
         {
@@ -21,7 +21,7 @@ SCENARIO("non-empty stack return count")
 {
     GIVEN("non-empty stack")
     {
-        Stack<int> st;
+        stack<int> st;
         st.push(1);
         st.push(2);
 

@@ -5,7 +5,7 @@ SCENARIO("return last element after top()")
 {
     GIVEN("stack")
     {
-        Stack<int> st;
+        stack<int> st;
         st.push(1);
         st.push(2);
 
@@ -24,7 +24,7 @@ SCENARIO("return last element after top()")
 SCENARIO("return element from empty stack")
 {
 	GIVEN("empty stack"){
-		Stack<int> st;
+		stack<int> st;
 	
 		WHEN("top an element"){
 			THEN("must be error"){

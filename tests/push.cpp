@@ -5,7 +5,7 @@ SCENARIO("push element")
 {
     GIVEN("stack")
     {
-        Stack<int> st;
+        stack<int> st;
         st.push(1);
         st.push(2);
         size_t count = st.count();

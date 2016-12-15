@@ -6,7 +6,7 @@ SCENARIO("empty stack")
 {
     GIVEN("Empty stack")
     {
-        Stack<int> st;
+        stack<int> st;
         WHEN("Calling empty()")
         {
             THEN("empty() must return true")
@@ -18,7 +18,7 @@ SCENARIO("empty stack")
 
     GIVEN("Not empty stack")
     {
-        Stack<int> st;
+        stack<int> st;
         st.push(1);
         WHEN("Calling empty()")
         {

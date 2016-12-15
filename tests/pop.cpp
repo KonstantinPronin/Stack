@@ -5,7 +5,7 @@ SCENARIO("decrease count after poping element")
 {
     GIVEN("stack")
     {
-        Stack<int> st;
+        stack<int> st;
         st.push(1);
         st.push(2);
         size_t count = st.count();
@@ -26,7 +26,7 @@ SCENARIO("if stack is empty, pop method must throw an exception")
 {
     GIVEN("empty stack")
     {
-        Stack<int> st;
+        stack<int> st;
 
         WHEN("trying to pop an element")
         {

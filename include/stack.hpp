@@ -1,17 +1,14 @@
-#include <iostream>
-#include <string>
-#include <exception>
+#include "allocator.hpp"
+
 
 template <typename T>
-class Stack {
-	T* array_;
-	size_t array_size_;
-	size_t count_;
-public:
-	Stack():array_(nullptr), array_size_(0), count_(0) {};
-	~Stack();
+class stack:protected allocator<T>{
 
-	auto count() const noexcept -> size_t;
+public:
+	stack() : allocator<T>() {};
+	~stack() {};
+
+	auto count() const noexcept->size_t;
 	auto empty() const noexcept -> bool;
 	auto push(const T&) /*strong*/ -> void;
 	auto pop() /*strong*/ -> void;
@@ -20,79 +17,57 @@ public:
 
 
 template<typename T>
-auto Stack<T>::count() const noexcept -> size_t{
-	return count_;
+auto stack<T>::count() const noexcept -> size_t {
+	return allocator<T>::count_;
 }
 
 template<typename T>
-auto Stack<T>::empty() const noexcept -> bool{
-	return !count_;
+auto stack<T>::empty() const noexcept -> bool {
+	return !allocator<T>::count_;
 }
 
 template<typename T>
-auto Stack<T>::push(const T& element) /*strong*/-> void{
-    
-    	T* backup(nullptr);
-	bool mem_alloc = false;
-	
-	if (array_size_ == count_) {
-		
-		T* tmp(nullptr);
-		backup = array_;
+auto stack<T>::push(const T& element) /*strong*/-> void {
+
+	if (allocator<T>::size_ == allocator<T>::count_) {
+		allocator<T> tmp(allocator<T>::size_ + 1);
 		
 		try {
-			tmp = new T[++array_size_];
-
-            		for (size_t i = 0; i < array_size_ - 1; ++i) {
-                		tmp[i] = array_[i];
-			}
-		}
+			std::copy(allocator<T>::array_, allocator<T>::array_ + allocator<T>::count_, tmp.array_);
+			tmp.count_ = allocator<T>::count_;
+			tmp.array_[tmp.count_++] = element;
+		}	
 		catch (...) {
-			delete[] tmp;
-			--array_size_;
 			throw;
 		}
-		
-		array_ = tmp;
-		mem_alloc = true;
+		allocator<T>::swap(tmp);
+	
 	}
-    
-    
-  	try{
-	    array_[count_] = element;
-    	}
-    	catch(...){
-        	if(mem_alloc) { 
-			delete[] array_;
-        		array_ = backup;
-			--array_size_;
+	else {
+		try {
+			allocator<T>::array_[allocator<T>::count_] = element;
 		}
-        	throw;    
-    	}
-
-    	if (mem_alloc) 
-		delete[] backup;
-    	++count_;
+		catch (...) {
+			throw;
+		}
+		++allocator<T>::count_;
+	}
 }
 
 template<typename T>
-auto Stack<T>::pop() /*strong*/ -> void{
-	if (count_)
-		--count_;
+auto stack<T>::pop() /*strong*/ -> void {
+	if (allocator<T>::count_)
+		--allocator<T>::count_;
 	else
 		throw std::logic_error("Stack is empty.");
 }
 
 template<typename T>
-auto Stack<T>::top() /*strong*/ -> T {
-    	if (count_)
-        	return array_[count_ - 1];
-    	else
+auto stack<T>::top() /*strong*/ -> T {
+	if (allocator<T>::count_)
+		return allocator<T>::array_[allocator<T>::count_ - 1];
+	else
 		throw std::logic_error("Stack is empty.");
 }
 
-template<typename T>
-Stack<T>::~Stack() {
-	delete[] array_;
-}
 
