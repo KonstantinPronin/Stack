@@ -2,10 +2,10 @@
 
 
 template <typename T>
-class stack:protected allocator<T>{
-
+class stack{
+	allocator<T> alloc_;
 public:
-	stack() : allocator<T>() {};
+	stack() : alloc_() {};
 	~stack() {};
 
 	auto count() const noexcept->size_t;
@@ -18,56 +18,53 @@ public:
 
 template<typename T>
 auto stack<T>::count() const noexcept -> size_t {
-	return allocator<T>::count_;
+	return alloc_.count();
 }
 
 template<typename T>
 auto stack<T>::empty() const noexcept -> bool {
-	return !allocator<T>::count_;
+	return !alloc_.count();
 }
 
 template<typename T>
-auto stack<T>::push(const T& element) /*strong*/-> void {
+auto stack<T>::push(const T& element) /*strong*/-> void {	
 
-	if (allocator<T>::size_ == allocator<T>::count_) {
-		allocator<T> tmp(allocator<T>::size_ + 1);
-		
+	if (alloc_.full()) {
+		if (!alloc_.resize()) 
+			throw std::logic_error("Fail with memory allocation");
 		try {
-			std::copy(allocator<T>::array_, allocator<T>::array_ + allocator<T>::count_, tmp.array_);
-			tmp.count_ = allocator<T>::count_;
-			tmp.array_[tmp.count_++] = element;
+			alloc_.construct(alloc_.get() + alloc_.count(), element);
 		}	
 		catch (...) {
+			alloc_.resize(-1);
 			throw;
 		}
-		allocator<T>::swap(tmp);
-	
+		
 	}
 	else {
 		try {
-			allocator<T>::array_[allocator<T>::count_] = element;
+			alloc_.construct(alloc_.get() + alloc_.count(), element);
 		}
 		catch (...) {
 			throw;
 		}
-		++allocator<T>::count_;
 	}
+	alloc_.count_increase();
 }
 
 template<typename T>
 auto stack<T>::pop() /*strong*/ -> void {
-	if (allocator<T>::count_)
-		--allocator<T>::count_;
+	if (!alloc_.empty())
+		alloc_.count_decrease();
 	else
 		throw std::logic_error("Stack is empty.");
 }
 
 template<typename T>
 auto stack<T>::top() /*strong*/ -> T {
-	if (allocator<T>::count_)
-		return allocator<T>::array_[allocator<T>::count_ - 1];
+	if (!alloc_.empty())
+		return *(alloc_.get() + alloc_.count() - 1);
 	else
 		throw std::logic_error("Stack is empty.");
 }
-
 
