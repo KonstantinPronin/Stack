@@ -43,7 +43,9 @@ allocator<T>::allocator(const allocator& other):size_(other.size_), count_(other
 
 template <typename T>
 allocator<T>::~allocator() {
-	delete[] array_;
+	for (size_t i = 0; i < count_; ++i)
+        	array_[i].~T(); 
+    	::operator delete[] (array_);
 }
 
 template <typename T>
@@ -78,8 +80,7 @@ auto allocator<T>::resize(int size) noexcept -> bool {
 template<typename T>
 auto allocator<T>::construct(T* ptr, const T& value) /*basic*/ -> void {
 	try {
-		::operator new(sizeof(T), ptr);
-		*ptr = T(value);
+	    new(ptr) T(value);
 	}
 	catch (...) {}
 }
