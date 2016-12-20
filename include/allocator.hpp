@@ -27,7 +27,9 @@ allocator<T>::allocator(size_t size):size_(size), count_(0) {
 
 template <typename T>
 allocator<T>::~allocator() {
-	delete[] array_;
+	for (size_t i = 0; i < count_; ++i)
+        	array_[i].~T(); 
+    	::operator delete[] (array_);
 }
 
 template <typename T>
